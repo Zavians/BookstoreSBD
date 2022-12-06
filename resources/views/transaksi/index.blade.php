@@ -17,7 +17,7 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                <th>ID_Buku</th>
+                <th>ID_Transaksi</th>
                 <th>Nama</th>
                 <th>NamaKasir</th>
                 <th>NamaPenerbit</th>

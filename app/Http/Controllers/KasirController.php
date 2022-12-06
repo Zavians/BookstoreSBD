@@ -52,7 +52,7 @@ class KasirController extends Controller
         'Alamat' => $request->Alamat,
         ]
         );
-        return redirect()->route('kasir.index')-> with('success', 'Data Admin berhasil disimpan');
+        return redirect()->route('kasir.index')-> with('success', 'Data Kasir berhasil disimpan');
         }
     /**
      * Display the specified resource.
@@ -71,11 +71,9 @@ class KasirController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        return view('kasir.edit')->with([
-            "kasir" => Kasir::find($id),
-        ]);
+    public function edit($id) {
+        $data = DB::table('kasir')->where('id', $id)->first();
+        return view('kasir.edit')->with('kasir', $data);
     }
 
     /**
@@ -102,7 +100,7 @@ class KasirController extends Controller
                 'Alamat' => $request->Alamat,
             ]
         );
-        return redirect()->route('kasir.index')->with('success', 'Data Admin berhasil diubah');
+        return redirect()->route('kasir.index')->with('success', 'Data Kasir berhasil diubah');
             }
 
     /**
@@ -111,18 +109,18 @@ class KasirController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $pembeli = Kasir::find($id);
-        $pembeli -> delete();
+    
+    public function destroy($id) {
+        // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+        DB::delete('DELETE FROM kasir WHERE id =:id', ['id' => $id]);
 
-        return back()->with("Success","Data Berhasil di Hapus.");
+return redirect()->route('kasir.index')-> with('success', 'Data Kasir berhasil dihapus');
     }
 
     public function soft($id)
     {
         DB::update('UPDATE kasir SET is_delete = 1 WHERE id = :id', ['id' => $id]);
 
-        return redirect()->route('kasir.index')->with('success', 'Data Barang berhasil dihapus');
+        return redirect()->route('kasir.index')->with('success', 'Data Kasir berhasil dihapus');
     }
 }

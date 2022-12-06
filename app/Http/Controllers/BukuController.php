@@ -73,11 +73,9 @@ class BukuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        return view('buku.edit')->with([
-            "buku" => Buku::find($id),
-        ]);
+    public function edit($id) {
+        $data = DB::table('buku')->where('id', $id)->first();
+        return view('buku.edit')->with('buku', $data);
     }
 
     /**
@@ -113,12 +111,11 @@ class BukuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $pembeli = Buku::find($id);
-        $pembeli->delete();
+    public function destroy($id) {
+        // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+        DB::delete('DELETE FROM buku WHERE id =:id', ['id' => $id]);
 
-        return back()->with("Success", "Data Berhasil di Hapus.");
+return redirect()->route('buku.index')-> with('success', 'Data Admin berhasil dihapus');
     }
 
     public function soft($id)

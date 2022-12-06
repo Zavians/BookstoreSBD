@@ -15,19 +15,22 @@ class TransaksiController extends Controller
     public function index(Request $request)
     {
         if ($request->has("search")) {
-            $datas = DB::select('select pembeli.Nama, kasir.NamaKasir, buku.NamaPenerbit, 
-            buku.Judul, buku.Harga from transaksi Inner join pembeli ON transaksi.id_pembeli=pembeli.id 
-            Inner Join kasir ON transaksi.id_kasir=kasir.id Inner Join buku ON transaksi.id_buku=buku.id 
-            where pembeli.nama = :search;',[
+            $datas = DB::select('SELECT pembeli.Nama, pembeli.MetodeBayar, kasir.NamaKasir, buku.Judul, buku.NamaPenerbit, buku.Harga
+            FROM pembeli inner JOIN kasir
+            on pembeli.id = kasir.id
+            inner join buku
+            on pembeli.id = buku.id where pembeli.nama = :search;',[
              "search"=>$request->search
             ]);
             return view('transaksi.index')
             ->with('transaksi', $datas);
         }
             else {
-                $datas = DB::select('select pembeli.Nama, kasir.NamaKasir, buku.NamaPenerbit, 
-            buku.Judul, buku.Harga from transaksi Inner join pembeli ON transaksi.id_pembeli=pembeli.id 
-            Inner Join kasir ON transaksi.id_kasir=kasir.id Inner Join buku ON transaksi.id_buku=buku.id 
+                $datas = DB::select('SELECT pembeli.Nama, pembeli.MetodeBayar, kasir.NamaKasir, buku.Judul, buku.NamaPenerbit, buku.Harga
+                FROM pembeli inner JOIN kasir
+                on pembeli.id = kasir.id
+                inner join buku
+                on pembeli.id = buku.id; 
             ');
             return view('transaksi.index')
             ->with('transaksi', $datas);

@@ -53,7 +53,7 @@ class PembeliController extends Controller
                 'MetodeBayar' => $request->MetodeBayar,
             ]
         );
-        return redirect()->route('pembeli.index')->with('success', 'Data Admin berhasil disimpan');
+        return redirect()->route('pembeli.index')->with('success', 'Data Pembeli berhasil disimpan');
     }
     /**
      * Display the specified resource.
@@ -72,11 +72,9 @@ class PembeliController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        return view('pembeli.edit')->with([
-            "pembeli" => Pembeli::find($id),
-        ]);
+    public function edit($id) {
+        $data = DB::table('pembeli')->where('id', $id)->first();
+        return view('pembeli.edit')->with('pembeli', $data);
     }
 
     /**
@@ -101,7 +99,7 @@ class PembeliController extends Controller
                 'MetodeBayar' => $request->MetodeBayar,
             ]
         );
-        return redirect()->route('pembeli.index')->with('success', 'Data Admin berhasil diubah');
+        return redirect()->route('pembeli.index')->with('success', 'Data Pembeli berhasil diubah');
     }
 
     /**
@@ -110,18 +108,17 @@ class PembeliController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $pembeli = Pembeli::find($id);
-        $pembeli->delete();
+    public function destroy($id) {
+        // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+        DB::delete('DELETE FROM pembeli WHERE id =:id', ['id' => $id]);
 
-        return back()->with("Success", "Data Berhasil di Hapus.");
+return redirect()->route('pembeli.index')-> with('success', 'Data Pembeli berhasil dihapus');
     }
 
     public function soft($id)
     {
         DB::update('UPDATE pembeli SET is_delete = 1 WHERE id = :id', ['id' => $id]);
 
-        return redirect()->route('pembeli.index')->with('success', 'Data Barang berhasil dihapus');
+        return redirect()->route('pembeli.index')->with('success', 'Data Pembeli berhasil dihapus');
     }
 }
